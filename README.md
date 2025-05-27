@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Coworkers - 팀 단위 Todo 관리 서비스
 
-## Getting Started
+Typescript, React 19, Next.js 15 App Router, Tailwind CSS, GitHub Actions, Docker, AWS EC2
 
-First, run the development server:
+- Next.js App Router에서 클라이언트/서버 컴포넌트의 실행 환경 차이를 고려해 토큰 기반 인증 흐름을 설계하고 구현했습니다. **–** [블로그 포스트](https://velog.io/@kangsj0327/Next.js-App-Router-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%ED%86%A0%ED%81%B0-%EA%B8%B0%EB%B0%98-%EC%9D%B8%EC%A6%9D-%EB%B0%8F-%EC%9E%90%EB%8F%99-%EA%B0%B1%EC%8B%A0-%EC%B2%98%EB%A6%AC-%EA%B5%AC%ED%98%84%EA%B8%B0)  
+  `src/lib/axiosClient.ts` `src/lib/axiosServer.ts`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- React의 `cache()`로 Next.js 서버에서 요청 결과를 캐싱하고, 클라이언트에서 데이터 수정 시 `revalidateTag()`로 해당 캐시를 무효화해 서버 컴포넌트를 재렌더링하도록 구성했습니다.  
+  `src/app/(content-layout)/[groupId]/(groupId)/page.tsx`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- UI의 낙관적 업데이트를 적용하기 위해 React 19의 `useOptimistic()`, `useTransition()` 훅을 사용했습니다.  
+  `src/app/(content-layout)/[groupId]/(groupId)/_[groupId]/Tasklists/index.tsx`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 동적 라우트되는 페이지마다 서로 다른 메타데이터를 적용하기 위해 Next.js의 `GenerateMetadata()` API를 사용했습니다.  
+  `src/app/(content-layout)/[groupId]/(groupId)/page.tsx`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 컴포넌트의 기능과 에러 처리 로직을 분리하기 위해 `react-error-boundary` 라이브러리와 Next.js의 `loading.tsx`, `error.tsx`를 정의해 Error Boundary 개념을 적용했습니다.
+  `src/app/(content-layout)/[groupId]/(groupId)/page.tsx`
+  
+- 반응형 디자인으로 서로 다른 이미지를 적용하기 위해 `<picture>` 태그와 Next.js의 `getImageProps()` API를 사용했습니다.  
+  `src/app/_home/BackgroundImage.tsx`
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- React의 `Context` API와 `CreatePortal()` 을 사용해 공통 Modal 컴포넌트를 구현했습니다.  
+  `src/components/common/modal`
